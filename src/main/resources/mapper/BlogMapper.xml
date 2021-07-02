@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myBlog.dao.BlogMapper">
+    <resultMap id="BaseResultMap" type="com.myBlog.bean.Blog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="typeName" jdbcType="VARCHAR" property="typeName"/>
+    </resultMap>
+    <insert id="addNewBlog" keyProperty="id" useGeneratedKeys="true" parameterType="blog">
+        insert into blog SET title=#{title},type=#{type},mdContent=#{mdContent},htmlContent=#{htmlContent},date=#{date}
+    </insert>
+    <select id="selectAllBlogs" resultMap="BaseResultMap">
+        SELECT blog.`id`,blog.`title`,type.`typeName`,blog.`date`,blog.`mdContent`
+        FROM blog LEFT JOIN type
+        ON blog.`type`=type.`id`
+        ORDER BY blog.`date` DESC
+    </select>
+    <select id="searchBlogByType" resultMap="BaseResultMap">
+        SELECT blog.`id`,blog.`title`,type.`typeName`,blog.`date`,blog.`mdContent`,blog.`htmlContent`
+        FROM blog LEFT JOIN type
+        ON blog.`type`=type.`id`
+        where type.`typeName`= #{searchBlog,jdbcType=VARCHAR}
+        ORDER BY blog.`date` DESC
+    </select>
+    <select id="queryBlogById" resultType="com.myBlog.bean.Blog">
+        SELECT blog.`id`,blog.`title`,type.`typeName`,blog.`date`,blog.`mdContent`,blog.`htmlContent`
+        FROM blog LEFT JOIN type
+        ON blog.`type`=type.`id`
+        where blog.id=#{blogId,javaType=INT}
+    </select>
+    <select id="updateBlogById" resultMap="BaseResultMap">
+        select blog.`title`,type.`typeName`,blog.`date`,blog.`mdContent`
+        from blog left join type
+        on blog.`type`=type.`id`
+        where blog.id=#{blogId,javaType=INT}
+    </select>
+
+</mapper>

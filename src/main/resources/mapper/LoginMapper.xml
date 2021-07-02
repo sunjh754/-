@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myBlog.dao.LoginMapper">
+    <resultMap id="LoginResult" type="com.myBlog.bean.User">
+        <result property="userName" jdbcType="VARCHAR" column="userName"/>
+        <result property="passWord" jdbcType="VARCHAR" column="password"/>
+    </resultMap>
+    <select id="getAdminByLogin" resultMap="LoginResult">
+        select userName, passWord
+        from myblog.login
+        where login.userName = #{inputName,jdbcType=VARCHAR}
+          and login.passWord =#{inputPassWord,jdbcType=VARCHAR}
+    </select>
+</mapper>
